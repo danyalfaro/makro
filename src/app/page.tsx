@@ -1,17 +1,32 @@
 "use client";
 
 import { useNodeContext } from "./components/NodeContext";
-import { Container, Component, Code } from "./types/context";
+import { Container, Component, Code, NodeType } from "./types/context";
 
 export default function Home() {
-  const context = useNodeContext();
+  const architectureData = useNodeContext();
+  const testNode = {
+    id: "nativeUsers",
+    label: "Native App",
+    type: NodeType.COMPONENT,
+    children: [{ label: "Mobile", id: "mobileCode", type: NodeType.CODE }],
+  };
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {context && context.data && (
-        <div className="flex">
-          {context.data.children.map((container, index) => (
-            <Container container={container} key={`container-${index}`} />
-          ))}
+      <button
+        onClick={() => {
+          architectureData?.addNode("container1", testNode);
+        }}
+      >
+        Add Component
+      </button>
+      {architectureData && architectureData.data && (
+        <div className="flex gap-2">
+          {architectureData.data.map((context) =>
+            context.children.map((container, index) => (
+              <Container container={container} key={`container-${index}`} />
+            ))
+          )}
         </div>
       )}
     </main>
