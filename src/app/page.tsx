@@ -1,25 +1,34 @@
 "use client";
 
 import { useNodeContext } from "./components/NodeContext";
+import { v4 as uuidv4 } from "uuid";
 import { Container, Component, Code, NodeType } from "./types/context";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { PopoverClose } from "@radix-ui/react-popover";
+import { Cross2Icon } from "@radix-ui/react-icons";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 export default function Home() {
   const architectureData = useNodeContext();
-  const testNode = {
-    id: "nativeUsers",
-    label: "Native App",
-    type: NodeType.COMPONENT,
-    children: [{ label: "Mobile", id: "mobileCode", type: NodeType.CODE }],
-  };
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <button
-        onClick={() => {
-          architectureData?.addNode("container1", testNode);
-        }}
-      >
-        Add Component
-      </button>
       {architectureData && architectureData.data && (
         <div className="flex gap-2">
           {architectureData.data.map((context) =>
@@ -34,6 +43,29 @@ export default function Home() {
 }
 
 function Container({ container }: { container: Container }) {
+  const architectureData = useNodeContext();
+
+  const createComponentFormSchema = z.object({
+    label: z.string().min(2).max(50),
+  });
+
+  const form = useForm<z.infer<typeof createComponentFormSchema>>({
+    resolver: zodResolver(createComponentFormSchema),
+    defaultValues: {
+      label: "",
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof createComponentFormSchema>) => {
+    const { label } = values;
+    const newComponent = {
+      id: uuidv4(),
+      label,
+      type: NodeType.COMPONENT,
+      children: [],
+    };
+    architectureData?.addNode(container.id, newComponent);
+  };
   return (
     <div className="bg-green-500 flex flex-col gap-4 p-8">
       <h1>Container</h1>
@@ -41,6 +73,38 @@ function Container({ container }: { container: Container }) {
       {container.children.map((component, index) => (
         <Component component={component} key={`component-${index}`} />
       ))}
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button type="button">Add Component</Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <PopoverClose>
+                <Cross2Icon />
+              </PopoverClose>
+
+              <FormField
+                control={form.control}
+                name="label"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Label</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      The label used for the component.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit">Submit</Button>
+            </form>
+          </Form>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }
