@@ -75,40 +75,55 @@ export default function NodeContextProvider({
     console.log("Modified!!!", data);
   }, [data]);
 
-  // const findNode = (nodeId: string): { node: Node | null; path: string } => {
-  //   if (data.id === nodeId) return { node: data, path: "initialContext" };
-  //   const match = null;
-  //   return { node: match, path: "" };
-  // };
-
   const addNode = (parentId: string, node: Node) => {
-    console.log("Adding node -------------> ", parentId, node);
-    // const { node: match, path } = findNode(parentId);
     let newNodes = [...data];
     newNodes.forEach((context) => {
       if (context.id === parentId && node.type === NodeType.CONTAINER) {
-        console.log("Found Parent -------------> ", context.id);
         context.children.push(node);
       }
       context.children.forEach((container) => {
         if (container.id === parentId && node.type === NodeType.COMPONENT) {
-          console.log("Found Parent -------------> ", container.id);
           container.children.push(node);
         }
         container.children.forEach((component) => {
           if (component.id === parentId && node.type === NodeType.CODE) {
-            console.log("Found Parent -------------> ", component.id);
             component.children.push(node);
           }
         });
       });
     });
-
-    console.log("Data: ", data);
-    console.log("NewNodes: ", newNodes);
     setData(newNodes);
   };
-  const removeNode = () => {};
+  const removeNode = (node: Node) => {
+    let newNodes = [...data];
+    newNodes.forEach((context) => {
+      context.children.forEach((container) => {
+        if (container.id === node.id && node.type === NodeType.CONTAINER) {
+          const index = context.children.indexOf(container);
+          if (index > -1) {
+            context.children.splice(index, 1);
+          }
+        }
+        container.children.forEach((component) => {
+          if (component.id === node.id && node.type === NodeType.COMPONENT) {
+            const index = container.children.indexOf(component);
+            if (index > -1) {
+              container.children.splice(index, 1);
+            }
+          }
+          component.children.forEach((code) => {
+            if (code.id === node.id && node.type === NodeType.CODE) {
+              const index = component.children.indexOf(code);
+              if (index > -1) {
+                component.children.splice(index, 1);
+              }
+            }
+          });
+        });
+      });
+    });
+    setData(newNodes);
+  };
   const editNode = () => {};
 
   return (
