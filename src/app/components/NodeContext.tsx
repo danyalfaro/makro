@@ -124,7 +124,31 @@ export default function NodeContextProvider({
     });
     setData(newNodes);
   };
-  const editNode = () => {};
+  const editNode = (node: Node) => {
+    let newNodes = [...data];
+    newNodes.forEach((context) => {
+      if (context.id === node.id) {
+        context.label = node.label;
+      } else {
+        context.children.forEach((container) => {
+          if (container.id === node.id && node.type === NodeType.CONTAINER) {
+            container.label = node.label;
+          }
+          container.children.forEach((component) => {
+            if (component.id === node.id && node.type === NodeType.COMPONENT) {
+              component.label = node.label;
+            }
+            component.children.forEach((code) => {
+              if (code.id === node.id && node.type === NodeType.CODE) {
+                code.label = node.label;
+              }
+            });
+          });
+        });
+      }
+    });
+    setData(newNodes);
+  };
 
   return (
     <NodeContext.Provider value={{ data, addNode, removeNode, editNode }}>
