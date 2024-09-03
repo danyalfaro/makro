@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Component from "./Component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,6 +57,7 @@ export default function Container({ container }: { container: Container }) {
     defaultValues: {
       label: "",
     },
+    shouldUnregister: true,
   });
 
   const editContainerForm = useForm<z.infer<typeof editContainerFormSchema>>({
@@ -64,6 +65,7 @@ export default function Container({ container }: { container: Container }) {
     defaultValues: {
       label: container?.label || "",
     },
+    shouldUnregister: true,
   });
 
   const onSubmit = (values: z.infer<typeof createComponentFormSchema>) => {

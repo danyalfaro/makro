@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Code } from "../types/context";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const editCodeFormSchema = z.object({
   label: z.string().min(2).max(50),
@@ -34,14 +34,14 @@ const editCodeFormSchema = z.object({
 
 export default function Code({ code }: { code: Code }) {
   const [isEditing, setIsEditing] = useState<Boolean>(false);
-
   const architectureData = useNodeContext();
 
   const editCodeForm = useForm<z.infer<typeof editCodeFormSchema>>({
     resolver: zodResolver(editCodeFormSchema),
     defaultValues: {
-      label: code?.label || "",
+      label: code.label,
     },
+    shouldUnregister: true,
   });
 
   const onEdit = (values: z.infer<typeof editCodeFormSchema>) => {
@@ -107,7 +107,6 @@ export default function Code({ code }: { code: Code }) {
           size="icon"
           onClick={() => {
             setIsEditing((prev) => !prev);
-            console.log(code);
           }}
         >
           {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}

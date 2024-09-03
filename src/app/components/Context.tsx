@@ -51,8 +51,9 @@ export default function Context({ context }: { context: Context }) {
   const editContextForm = useForm<z.infer<typeof editContextFormSchema>>({
     resolver: zodResolver(editContextFormSchema),
     defaultValues: {
-      label: context?.label || "",
+      label: context.label,
     },
+    shouldUnregister: true,
   });
 
   const form = useForm<z.infer<typeof createContainerFormSchema>>({
@@ -60,6 +61,7 @@ export default function Context({ context }: { context: Context }) {
     defaultValues: {
       label: "",
     },
+    shouldUnregister: true,
   });
 
   const onSubmit = (values: z.infer<typeof createContainerFormSchema>) => {

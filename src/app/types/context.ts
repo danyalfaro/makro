@@ -37,6 +37,7 @@ export type ArchitectureData = {
   addNode: any;
   removeNode: any;
   editNode: any;
+  isLoading: boolean;
 };
 
 export type Node = Context | Container | Component | Code;

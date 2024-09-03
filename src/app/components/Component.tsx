@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Code from "./Code";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const createCodeFormSchema = z.object({
   label: z.string().min(2).max(50),
@@ -53,6 +53,7 @@ export default function Component({ component }: { component: Component }) {
     defaultValues: {
       label: "",
     },
+    shouldUnregister: true,
   });
 
   const editComponentForm = useForm<z.infer<typeof createCodeFormSchema>>({
@@ -60,6 +61,7 @@ export default function Component({ component }: { component: Component }) {
     defaultValues: {
       label: component?.label || "",
     },
+    shouldUnregister: true,
   });
 
   const onSubmit = (values: z.infer<typeof createCodeFormSchema>) => {

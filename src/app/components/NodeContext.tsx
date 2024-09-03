@@ -17,6 +17,7 @@ export default function NodeContextProvider({
 }: {
   children: ReactElement;
 }) {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<Context[]>([
     {
       id: uuidv4(),
@@ -73,7 +74,7 @@ export default function NodeContextProvider({
   ]);
 
   useEffect(() => {
-    console.log(data);
+    setIsLoading(false);
   }, [data]);
 
   const addNode = (parentId: string, node: Node) => {
@@ -96,8 +97,12 @@ export default function NodeContextProvider({
     setData(newNodes);
   };
   const removeNode = (node: Node) => {
+    setIsLoading(true);
     let newNodes = [...data];
     newNodes.forEach((context) => {
+      if (context.id === node.id) {
+        newNodes = [];
+      }
       context.children.forEach((container) => {
         if (container.id === node.id && node.type === NodeType.CONTAINER) {
           const index = context.children.indexOf(container);
@@ -126,6 +131,7 @@ export default function NodeContextProvider({
     setData(newNodes);
   };
   const editNode = (node: Node) => {
+    setIsLoading(true);
     let newNodes = [...data];
     newNodes.forEach((context) => {
       if (context.id === node.id) {
@@ -152,7 +158,9 @@ export default function NodeContextProvider({
   };
 
   return (
-    <NodeContext.Provider value={{ data, addNode, removeNode, editNode }}>
+    <NodeContext.Provider
+      value={{ data, isLoading, addNode, removeNode, editNode }}
+    >
       {children}
     </NodeContext.Provider>
   );

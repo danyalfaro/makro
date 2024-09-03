@@ -9,13 +9,16 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {architectureData && architectureData.data && (
-        <div>
-          {architectureData.data.map((context, index) => (
-            <Context context={context} key={`context-${index}`} />
-          ))}
-        </div>
-      )}
+      {architectureData &&
+        !architectureData.isLoading &&
+        architectureData.data && (
+          <div>
+            {architectureData.data.map((context, index) => (
+              <Context context={context} key={`context-${index}`} />
+            ))}
+          </div>
+        )}
+      {architectureData?.isLoading && <div>Loading...</div>}
     </main>
   );
 }
