@@ -1,15 +1,19 @@
 "use client";
 
 import { useNodeContext } from "../components/NodeContext";
-import { v4 as uuidv4 } from "uuid";
-import { Container, NodeType } from "../types/context";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { PopoverClose } from "@radix-ui/react-popover";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { PopoverClose } from "@radix-ui/react-popover";
 import {
   Cross2Icon,
   DotsVerticalIcon,
@@ -24,70 +28,63 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Component from "./Component";
+import { Context, NodeType } from "../types/context";
 import { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import Container from "./Container";
+import { v4 as uuidv4 } from "uuid";
 
-const createComponentFormSchema = z.object({
+const editContextFormSchema = z.object({
+  label: z.string().min(2).max(50),
+});
+const createContainerFormSchema = z.object({
   label: z.string().min(2).max(50),
 });
 
-const editContainerFormSchema = z.object({
-  label: z.string().min(2).max(50),
-});
-
-export default function Container({ container }: { container: Container }) {
+export default function Context({ context }: { context: Context }) {
   const [isEditing, setIsEditing] = useState<Boolean>(false);
 
   const architectureData = useNodeContext();
 
-  const createComponentForm = useForm<
-    z.infer<typeof createComponentFormSchema>
-  >({
-    resolver: zodResolver(createComponentFormSchema),
+  const editContextForm = useForm<z.infer<typeof editContextFormSchema>>({
+    resolver: zodResolver(editContextFormSchema),
+    defaultValues: {
+      label: context?.label || "",
+    },
+  });
+
+  const form = useForm<z.infer<typeof createContainerFormSchema>>({
+    resolver: zodResolver(createContainerFormSchema),
     defaultValues: {
       label: "",
     },
   });
 
-  const editContainerForm = useForm<z.infer<typeof editContainerFormSchema>>({
-    resolver: zodResolver(editContainerFormSchema),
-    defaultValues: {
-      label: container?.label || "",
-    },
-  });
-
-  const onSubmit = (values: z.infer<typeof createComponentFormSchema>) => {
+  const onSubmit = (values: z.infer<typeof createContainerFormSchema>) => {
     const { label } = values;
-    const newComponent = {
+    const newContainer = {
       id: uuidv4(),
       label,
-      type: NodeType.COMPONENT,
+      type: NodeType.CONTAINER,
       children: [],
     };
-    architectureData?.addNode(container.id, newComponent);
+    architectureData?.addNode(architectureData.data[0].id, newContainer);
   };
 
-  const onEdit = (values: z.infer<typeof editContainerFormSchema>) => {
+  const onEdit = (values: z.infer<typeof editContextFormSchema>) => {
     const { label } = values;
-    const editedContainer = {
-      ...container,
+    const newContext = {
+      ...context,
       label,
     };
-    architectureData?.editNode(editedContainer);
+    architectureData?.editNode(newContext);
     setIsEditing(false);
   };
+
   return (
-    <div className="bg-green-500 flex flex-col gap-4 p-8">
+    <div className="bg-gray-400 flex items-start gap-4 p-8">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" type="button" size="icon">
@@ -97,7 +94,7 @@ export default function Container({ container }: { container: Container }) {
         <DropdownMenuContent>
           <DropdownMenuItem
             onClick={() => {
-              architectureData?.removeNode(container);
+              architectureData?.removeNode(context);
             }}
           >
             Remove
@@ -107,15 +104,15 @@ export default function Container({ container }: { container: Container }) {
 
       <div className="flex items-center">
         {!isEditing ? (
-          <h1>{container.label}</h1>
+          <h1>{context.label}</h1>
         ) : (
-          <Form {...editContainerForm}>
+          <Form {...editContextForm}>
             <form
-              onSubmit={editContainerForm.handleSubmit(onEdit)}
+              onSubmit={editContextForm.handleSubmit(onEdit)}
               className="space-y-8"
             >
               <FormField
-                control={editContainerForm.control}
+                control={editContextForm.control}
                 name="label"
                 render={({ field }) => (
                   <FormItem>
@@ -123,7 +120,7 @@ export default function Container({ container }: { container: Container }) {
                       <Input {...field} />
                     </FormControl>
                     <FormDescription>
-                      The label used for the container.
+                      The label used for the code.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -142,35 +139,30 @@ export default function Container({ container }: { container: Container }) {
           {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
         </Button>
       </div>
-      {container.children.map((component, index) => (
-        <Component component={component} key={`component-${index}`} />
+      {context.children.map((container, index) => (
+        <Container container={container} key={`container-${index}`} />
       ))}
-
       <Popover>
         <PopoverTrigger asChild>
-          <Button type="button">Add Component</Button>
+          <Button type="button">Add Container</Button>
         </PopoverTrigger>
         <PopoverContent>
-          <Form {...createComponentForm}>
-            <form
-              onSubmit={createComponentForm.handleSubmit(onSubmit)}
-              className="space-y-8"
-            >
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <PopoverClose>
                 <Cross2Icon />
               </PopoverClose>
 
               <FormField
-                control={createComponentForm.control}
+                control={form.control}
                 name="label"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Label</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
                     <FormDescription>
-                      The label used for the component.
+                      The label used for the container.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>

@@ -2,13 +2,17 @@
 
 import { useNodeContext } from "../components/NodeContext";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { PopoverClose } from "@radix-ui/react-popover";
-import { Cross2Icon } from "@radix-ui/react-icons";
+import {
+  Cross2Icon,
+  DotsVerticalIcon,
+  Pencil1Icon,
+} from "@radix-ui/react-icons";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,17 +22,19 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Code } from "../types/context";
+import { useState } from "react";
 
 const editCodeFormSchema = z.object({
   label: z.string().min(2).max(50),
 });
 
 export default function Code({ code }: { code: Code }) {
+  const [isEditing, setIsEditing] = useState<Boolean>(false);
+
   const architectureData = useNodeContext();
 
   const editCodeForm = useForm<z.infer<typeof editCodeFormSchema>>({
@@ -45,40 +51,42 @@ export default function Code({ code }: { code: Code }) {
       label,
     };
     architectureData?.editNode(newCode);
+    setIsEditing(false);
   };
 
   return (
     <div className="bg-gray-400 flex flex-col gap-4 p-8">
-      <Button
-        type="button"
-        onClick={() => {
-          architectureData?.removeNode(code);
-        }}
-      >
-        Remove Code
-      </Button>
-      <h1>Code</h1>
-      <h1>{code.label}</h1>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button type="button">Edit Code</Button>
-        </PopoverTrigger>
-        <PopoverContent>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" type="button" size="icon">
+            <DotsVerticalIcon />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem
+            onClick={() => {
+              architectureData?.removeNode(code);
+            }}
+          >
+            Remove
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <div className="flex items-center">
+        {!isEditing ? (
+          <h1>{code.label}</h1>
+        ) : (
           <Form {...editCodeForm}>
             <form
               onSubmit={editCodeForm.handleSubmit(onEdit)}
               className="space-y-8"
             >
-              <PopoverClose>
-                <Cross2Icon />
-              </PopoverClose>
-
               <FormField
                 control={editCodeForm.control}
                 name="label"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Label</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -92,8 +100,19 @@ export default function Code({ code }: { code: Code }) {
               <Button type="submit">Submit</Button>
             </form>
           </Form>
-        </PopoverContent>
-      </Popover>
+        )}
+        <Button
+          variant="ghost"
+          type="button"
+          size="icon"
+          onClick={() => {
+            setIsEditing((prev) => !prev);
+            console.log(code);
+          }}
+        >
+          {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
+        </Button>
+      </div>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import { ArchitectureData, Context, Node, NodeType } from "../types/context";
+import { v4 as uuidv4 } from "uuid";
 
 export const NodeContext = createContext<ArchitectureData | null>(null);
 
@@ -18,35 +19,35 @@ export default function NodeContextProvider({
 }) {
   const [data, setData] = useState<Context[]>([
     {
-      id: "initialContext",
+      id: uuidv4(),
       label: "Name of the Project",
       type: NodeType.CONTEXT,
       children: [
         {
-          id: "container1",
+          id: uuidv4(),
           label: "Container 1",
           type: NodeType.CONTAINER,
           children: [
             {
-              id: "usersComponent",
+              id: uuidv4(),
               label: "Users",
               type: NodeType.COMPONENT,
               children: [
-                { label: "Desktop", id: "desktopCode", type: NodeType.CODE },
-                { label: "Tablet", id: "tabletCode", type: NodeType.CODE },
-                { label: "Mobile", id: "mobileCode", type: NodeType.CODE },
+                { label: "Desktop", id: uuidv4(), type: NodeType.CODE },
+                { label: "Tablet", id: uuidv4(), type: NodeType.CODE },
+                { label: "Mobile", id: uuidv4(), type: NodeType.CODE },
               ],
             },
           ],
         },
         {
           label: "Container 2",
-          id: "container2",
+          id: uuidv4(),
           type: NodeType.CONTAINER,
           children: [
             {
               label: "Front End",
-              id: "frontEndComponent",
+              id: uuidv4(),
               type: NodeType.COMPONENT,
               children: [
                 { label: "React", id: "reactCode", type: NodeType.CODE },
@@ -56,12 +57,12 @@ export default function NodeContextProvider({
         },
         {
           label: "Container 3",
-          id: "container3",
+          id: uuidv4(),
           type: NodeType.CONTAINER,
           children: [
             {
               label: "Back End",
-              id: "backEndComponent",
+              id: uuidv4(),
               type: NodeType.COMPONENT,
               children: [{ label: "API", id: "apiCode", type: NodeType.CODE }],
             },
@@ -72,7 +73,7 @@ export default function NodeContextProvider({
   ]);
 
   useEffect(() => {
-    console.log("Modified!!!", data);
+    console.log(data);
   }, [data]);
 
   const addNode = (parentId: string, node: Node) => {
