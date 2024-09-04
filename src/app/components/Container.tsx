@@ -90,64 +90,66 @@ export default function Container({ container }: { container: Container }) {
   };
   return (
     <div className="bg-green-500 flex flex-col gap-4 p-8">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" type="button" size="icon">
-            <DotsVerticalIcon />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem
-            onClick={() => {
-              architectureData?.removeNode(container);
-            }}
+      <div className="flex items-start justify-between">
+        <div className={`flex ${isEditing ? "items-start" : "items-center"}`}>
+          {!isEditing ? (
+            <h1>{container.label}</h1>
+          ) : (
+            <Form {...editContainerForm}>
+              <form
+                onSubmit={editContainerForm.handleSubmit(onEdit)}
+                className="space-y-8"
+              >
+                <FormField
+                  control={editContainerForm.control}
+                  name="label"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        The label used for the container.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Submit</Button>
+              </form>
+            </Form>
+          )}
+          <Button
+            variant="ghost"
+            type="button"
+            size="icon"
+            onClick={() => setIsEditing((prev) => !prev)}
           >
-            Remove
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <div className="flex items-center">
-        {!isEditing ? (
-          <h1>{container.label}</h1>
-        ) : (
-          <Form {...editContainerForm}>
-            <form
-              onSubmit={editContainerForm.handleSubmit(onEdit)}
-              className="space-y-8"
-            >
-              <FormField
-                control={editContainerForm.control}
-                name="label"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      The label used for the container.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Submit</Button>
-            </form>
-          </Form>
+            {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
+          </Button>
+        </div>
+        {!isEditing && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" type="button" size="icon">
+                <DotsVerticalIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={() => {
+                  architectureData?.removeNode(container);
+                }}
+              >
+                Remove
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
-        <Button
-          variant="ghost"
-          type="button"
-          size="icon"
-          onClick={() => setIsEditing((prev) => !prev)}
-        >
-          {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
-        </Button>
       </div>
       {container.children.map((component, index) => (
         <Component component={component} key={`component-${index}`} />
       ))}
-
       <Popover>
         <PopoverTrigger asChild>
           <Button type="button">Add Component</Button>

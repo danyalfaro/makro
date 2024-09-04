@@ -86,58 +86,62 @@ export default function Component({ component }: { component: Component }) {
 
   return (
     <div className="bg-blue-500 flex flex-col gap-4 p-8">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" type="button" size="icon">
-            <DotsVerticalIcon />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem
-            onClick={() => {
-              architectureData?.removeNode(component);
-            }}
+      <div className="flex items-start justify-between">
+        <div className={`flex ${isEditing ? "items-start" : "items-center"}`}>
+          {!isEditing ? (
+            <h1>{component.label}</h1>
+          ) : (
+            <Form {...editComponentForm}>
+              <form
+                onSubmit={editComponentForm.handleSubmit(onEdit)}
+                className="space-y-8"
+              >
+                <FormField
+                  control={editComponentForm.control}
+                  name="label"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        The label used for the code.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Submit</Button>
+              </form>
+            </Form>
+          )}
+          <Button
+            variant="ghost"
+            type="button"
+            size="icon"
+            onClick={() => setIsEditing((prev) => !prev)}
           >
-            Remove
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <div className="flex items-center">
-        {!isEditing ? (
-          <h1>{component.label}</h1>
-        ) : (
-          <Form {...editComponentForm}>
-            <form
-              onSubmit={editComponentForm.handleSubmit(onEdit)}
-              className="space-y-8"
-            >
-              <FormField
-                control={editComponentForm.control}
-                name="label"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      The label used for the code.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Submit</Button>
-            </form>
-          </Form>
+            {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
+          </Button>
+        </div>
+        {!isEditing && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" type="button" size="icon">
+                <DotsVerticalIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={() => {
+                  architectureData?.removeNode(component);
+                }}
+              >
+                Remove
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
-        <Button
-          variant="ghost"
-          type="button"
-          size="icon"
-          onClick={() => setIsEditing((prev) => !prev)}
-        >
-          {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
-        </Button>
       </div>
 
       {component.children.map((code, index) => (

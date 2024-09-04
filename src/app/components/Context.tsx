@@ -28,6 +28,7 @@ import {
   FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -87,24 +88,7 @@ export default function Context({ context }: { context: Context }) {
 
   return (
     <div className="bg-gray-400 flex items-start gap-4 p-8">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" type="button" size="icon">
-            <DotsVerticalIcon />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem
-            onClick={() => {
-              architectureData?.removeNode(context);
-            }}
-          >
-            Remove
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <div className="flex items-center">
+      <div className={`flex ${isEditing ? "items-start" : "items-center"}`}>
         {!isEditing ? (
           <h1>{context.label}</h1>
         ) : (
@@ -140,6 +124,24 @@ export default function Context({ context }: { context: Context }) {
         >
           {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
         </Button>
+        {!isEditing && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" type="button" size="icon">
+                <DotsVerticalIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                onClick={() => {
+                  architectureData?.removeNode(context);
+                }}
+              >
+                Remove
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       {context.children.map((container, index) => (
         <Container container={container} key={`container-${index}`} />
@@ -160,6 +162,7 @@ export default function Context({ context }: { context: Context }) {
                 name="label"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel>Label</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
