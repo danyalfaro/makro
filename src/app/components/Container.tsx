@@ -47,82 +47,84 @@ const editContainerFormSchema = z.object({
   label: z.string().min(2).max(50),
 });
 
-const contaierVariants = cva("disabled:opacity-50", {
+const contaierVariants = cva('disabled:opacity-50', {
   variants: {
     variant: {
-      minimalist:
-        "flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow border-dashed border-black border-2 rounded-xl",
+      minimalism:
+        'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground border-dashed border-black border-2 rounded-xl',
       neumorphism:
-        "flex flex-col gap-4 text-black-foreground shadow-[inset_-7px_-7px_12px_3px_rgba(255,255,255,0.7),inset_7px_7px_12px_3px_rgba(0,0,0,0.10)] rounded-3xl",
+        'flex flex-col gap-4 text-black-foreground shadow-[inset_-7px_-7px_12px_3px_rgba(255,255,255,0.7),inset_7px_7px_12px_3px_rgba(0,0,0,0.10)] rounded-3xl',
       neubrutalism:
-        "flex flex-col gap-8 bg-[#CEEB3C] font-bold text-black-foreground shadow-[18px_18px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2",
+        'flex flex-col gap-8 bg-[#CEEB3C] font-bold text-black-foreground shadow-[18px_18px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+      glassmorphism:
+        'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-white bg-opacity-5',
     },
     size: {
-      default: "p-8",
-      sm: "h-8 rounded-md px-3 text-xs",
-      lg: "h-10 rounded-md px-8",
-      icon: "h-9 w-9",
+      default: 'p-8',
+      sm: 'h-8 rounded-md px-3 text-xs',
+      lg: 'h-10 rounded-md px-8',
+      icon: 'h-9 w-9',
     },
   },
   defaultVariants: {
-    variant: "neubrutalism",
-    size: "default",
+    variant: 'minimalism',
+    size: 'default',
   },
-});
+})
 
 export default function Container({
   container,
   size,
   variant,
 }: {
-  container: Container;
+  container: Container
 } & VariantProps<typeof contaierVariants>) {
-  const [isEditing, setIsEditing] = useState<Boolean>(false);
+  const [isEditing, setIsEditing] = useState<Boolean>(false)
 
-  const architectureData = useNodeContext();
+  const architectureData = useNodeContext()
 
   const createComponentForm = useForm<
     z.infer<typeof createComponentFormSchema>
   >({
     resolver: zodResolver(createComponentFormSchema),
     defaultValues: {
-      label: "",
+      label: '',
     },
     shouldUnregister: true,
-  });
+  })
 
   const editContainerForm = useForm<z.infer<typeof editContainerFormSchema>>({
     resolver: zodResolver(editContainerFormSchema),
     defaultValues: {
-      label: container?.label || "",
+      label: container?.label || '',
     },
     shouldUnregister: true,
-  });
+  })
 
   const onSubmit = (values: z.infer<typeof createComponentFormSchema>) => {
-    const { label } = values;
+    const { label } = values
     const newComponent = {
       id: uuidv4(),
       label,
       type: NodeType.COMPONENT,
       children: [],
-    };
-    architectureData?.addNode(container.id, newComponent);
-  };
+    }
+    architectureData?.addNode(container.id, newComponent)
+  }
 
   const onEdit = (values: z.infer<typeof editContainerFormSchema>) => {
-    const { label } = values;
+    const { label } = values
     const editedContainer = {
       ...container,
       label,
-    };
-    architectureData?.editNode(editedContainer);
-    setIsEditing(false);
-  };
+    }
+    architectureData?.editNode(editedContainer)
+    setIsEditing(false)
+  }
   return (
     <div className={cn(contaierVariants({ variant, size }))}>
       <div className="flex items-start justify-between">
-        <div className={`flex ${isEditing ? "items-start" : "items-center"}`}>
+        <div className={`flex ${isEditing ? 'items-start' : 'items-center'}`}>
           {!isEditing ? (
             <h1>{container.label}</h1>
           ) : (
@@ -169,7 +171,7 @@ export default function Container({
             <DropdownMenuContent>
               <DropdownMenuItem
                 onClick={() => {
-                  architectureData?.removeNode(container);
+                  architectureData?.removeNode(container)
                 }}
               >
                 Remove
@@ -179,7 +181,11 @@ export default function Container({
         )}
       </div>
       {container.children.map((component, index) => (
-        <Component component={component} key={`component-${index}`} />
+        <Component
+          component={component}
+          key={`component-${index}`}
+          variant={variant}
+        />
       ))}
       <Popover>
         <PopoverTrigger asChild>
@@ -217,5 +223,5 @@ export default function Container({
         </PopoverContent>
       </Popover>
     </div>
-  );
+  )
 }

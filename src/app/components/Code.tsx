@@ -34,28 +34,30 @@ const editCodeFormSchema = z.object({
   label: z.string().min(2).max(50),
 });
 
-const codeVariants = cva("disabled:opacity-50", {
+const codeVariants = cva('disabled:opacity-50', {
   variants: {
     variant: {
-      minimalist:
-        "flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow bg-black bg-opacity-5 rounded-xl",
+      minimalism:
+        'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground bg-black bg-opacity-5 rounded-xl',
       neumorphism:
-        "flex flex-col gap-4 rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)]",
+        'flex flex-col gap-4 rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)]',
       neubrutalism:
-        "flex flex-col gap-4 bg-[#CEEB3C] font-bold text-black-foreground shadow-[10px_10px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2",
+        'flex flex-col gap-4 bg-[#CEEB3C] font-bold text-black-foreground shadow-[10px_10px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+      glassmorphism:
+        'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-white bg-opacity-5',
     },
     size: {
-      default: "p-8",
-      sm: "h-8 rounded-md px-3 text-xs",
-      lg: "h-10 rounded-md px-8",
-      icon: "h-9 w-9",
+      default: 'p-8',
+      sm: 'h-8 rounded-md px-3 text-xs',
+      lg: 'h-10 rounded-md px-8',
+      icon: 'h-9 w-9',
     },
   },
   defaultVariants: {
-    variant: "neubrutalism",
-    size: "default",
+    variant: 'minimalism',
+    size: 'default',
   },
-});
+})
 
 export default function Code({
   code,

@@ -46,37 +46,39 @@ const createContainerFormSchema = z.object({
   label: z.string().min(2).max(50),
 });
 
-const contextVariants = cva("disabled:opacity-50", {
+const contextVariants = cva('disabled:opacity-50', {
   variants: {
     variant: {
-      minimalist:
-        "flex items-start gap-4 bg-[#eeeeee] text-black-foreground shadow rounded-xl",
+      minimalism:
+        'flex items-start gap-4 bg-[#eeeeee] text-black-foreground rounded-xl',
       neumorphism:
-        "flex items-start gap-4 bg-[#eeeeee] text-black-foreground shadow rounded-3xl",
+        'flex items-start gap-4 bg-[#eeeeee] text-black-foreground shadow rounded-3xl',
       neubrutalism:
-        "flex items-start gap-12 bg-[#CEEB3C] font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2",
+        'flex items-start gap-12 bg-[#CEEB3C] font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+      glassmorphism:
+        'flex items-start gap-4 text-black-foreground bg-gradient-to-r from-[#63E8FF] to-[#5878F6] border-solid border-[#ffffff20] border-[1px] rounded-xl',
     },
     size: {
-      default: "p-8",
-      sm: "h-8 rounded-md px-3 text-xs",
-      lg: "h-10 rounded-md px-8",
-      icon: "h-9 w-9",
+      default: 'p-8',
+      sm: 'h-8 rounded-md px-3 text-xs',
+      lg: 'h-10 rounded-md px-8',
+      icon: 'h-9 w-9',
     },
   },
   defaultVariants: {
-    variant: "neubrutalism",
-    size: "default",
+    variant: 'minimalism',
+    size: 'default',
   },
-});
+})
 
 export default function Context({
   context,
   variant,
   size,
 }: { context: Context } & VariantProps<typeof contextVariants>) {
-  const [isEditing, setIsEditing] = useState<Boolean>(false);
+  const [isEditing, setIsEditing] = useState<Boolean>(false)
 
-  const architectureData = useNodeContext();
+  const architectureData = useNodeContext()
 
   const editContextForm = useForm<z.infer<typeof editContextFormSchema>>({
     resolver: zodResolver(editContextFormSchema),
@@ -84,40 +86,40 @@ export default function Context({
       label: context.label,
     },
     shouldUnregister: true,
-  });
+  })
 
   const form = useForm<z.infer<typeof createContainerFormSchema>>({
     resolver: zodResolver(createContainerFormSchema),
     defaultValues: {
-      label: "",
+      label: '',
     },
     shouldUnregister: true,
-  });
+  })
 
   const onSubmit = (values: z.infer<typeof createContainerFormSchema>) => {
-    const { label } = values;
+    const { label } = values
     const newContainer = {
       id: uuidv4(),
       label,
       type: NodeType.CONTAINER,
       children: [],
-    };
-    architectureData?.addNode(architectureData.data[0].id, newContainer);
-  };
+    }
+    architectureData?.addNode(architectureData.data[0].id, newContainer)
+  }
 
   const onEdit = (values: z.infer<typeof editContextFormSchema>) => {
-    const { label } = values;
+    const { label } = values
     const newContext = {
       ...context,
       label,
-    };
-    architectureData?.editNode(newContext);
-    setIsEditing(false);
-  };
+    }
+    architectureData?.editNode(newContext)
+    setIsEditing(false)
+  }
 
   return (
     <div className={cn(contextVariants({ variant, size }))}>
-      <div className={`flex ${isEditing ? "items-start" : "items-center"}`}>
+      <div className={`flex ${isEditing ? 'items-start' : 'items-center'}`}>
         {!isEditing ? (
           <h1>{context.label}</h1>
         ) : (
@@ -163,7 +165,7 @@ export default function Context({
             <DropdownMenuContent>
               <DropdownMenuItem
                 onClick={() => {
-                  architectureData?.removeNode(context);
+                  architectureData?.removeNode(context)
                 }}
               >
                 Remove
@@ -173,7 +175,11 @@ export default function Context({
         )}
       </div>
       {context.children.map((container, index) => (
-        <Container container={container} key={`container-${index}`} />
+        <Container
+          container={container}
+          key={`container-${index}`}
+          variant={variant}
+        />
       ))}
       <Popover>
         <PopoverTrigger asChild>
@@ -208,5 +214,5 @@ export default function Context({
         </PopoverContent>
       </Popover>
     </div>
-  );
+  )
 }

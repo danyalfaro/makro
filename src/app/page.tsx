@@ -14,13 +14,17 @@ export default function Home() {
         architectureData.data && (
           <div>
             {architectureData.data.map((context, index) => (
-              <Context context={context} key={`context-${index}`} />
+              <Context
+                context={context}
+                key={`context-${index}`}
+                variant="minimalism"
+              />
             ))}
           </div>
         )}
       {architectureData?.isLoading && <div>Loading...</div>}
     </main>
-  );
+  )
 }
 
 
