@@ -34,7 +34,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Code from "./Code";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { cva, VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const createCodeFormSchema = z.object({
   label: z.string().min(2).max(50),
@@ -44,7 +46,34 @@ const editComponentFormSchema = z.object({
   label: z.string().min(2).max(50),
 });
 
-export default function Component({ component }: { component: Component }) {
+const componentVariants = cva("disabled:opacity-50", {
+  variants: {
+    variant: {
+      minimalist:
+        "flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow bg-black bg-opacity-5 rounded-xl",
+      neumorphism:
+        "flex flex-col gap-4 rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)]",
+      neubrutalism:
+        "flex flex-col gap-8 bg-[#CEEB3C] font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2",
+    },
+    size: {
+      default: "p-8",
+      sm: "h-8 rounded-md px-3 text-xs",
+      lg: "h-10 rounded-md px-8",
+      icon: "h-9 w-9",
+    },
+  },
+  defaultVariants: {
+    variant: "neubrutalism",
+    size: "default",
+  },
+});
+
+export default function Component({
+  component,
+  variant,
+  size,
+}: { component: Component } & VariantProps<typeof componentVariants>) {
   const [isEditing, setIsEditing] = useState<Boolean>(false);
   const architectureData = useNodeContext();
 
@@ -85,7 +114,7 @@ export default function Component({ component }: { component: Component }) {
   };
 
   return (
-    <div className="bg-blue-500 flex flex-col gap-4 p-8">
+    <div className={cn(componentVariants({ variant, size }))}>
       <div className="flex items-start justify-between">
         <div className={`flex ${isEditing ? "items-start" : "items-center"}`}>
           {!isEditing ? (
@@ -111,7 +140,7 @@ export default function Component({ component }: { component: Component }) {
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Save</Button>
               </form>
             </Form>
           )}
@@ -177,7 +206,7 @@ export default function Component({ component }: { component: Component }) {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Save</Button>
             </form>
           </Form>
         </PopoverContent>

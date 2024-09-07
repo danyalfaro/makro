@@ -36,6 +36,8 @@ import { Context, NodeType } from "../types/context";
 import { useState } from "react";
 import Container from "./Container";
 import { v4 as uuidv4 } from "uuid";
+import { cva, VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 const editContextFormSchema = z.object({
   label: z.string().min(2).max(50),
@@ -44,7 +46,34 @@ const createContainerFormSchema = z.object({
   label: z.string().min(2).max(50),
 });
 
-export default function Context({ context }: { context: Context }) {
+const contextVariants = cva("disabled:opacity-50", {
+  variants: {
+    variant: {
+      minimalist:
+        "flex items-start gap-4 bg-[#eeeeee] text-black-foreground shadow rounded-xl",
+      neumorphism:
+        "flex items-start gap-4 bg-[#eeeeee] text-black-foreground shadow rounded-3xl",
+      neubrutalism:
+        "flex items-start gap-12 bg-[#CEEB3C] font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2",
+    },
+    size: {
+      default: "p-8",
+      sm: "h-8 rounded-md px-3 text-xs",
+      lg: "h-10 rounded-md px-8",
+      icon: "h-9 w-9",
+    },
+  },
+  defaultVariants: {
+    variant: "neubrutalism",
+    size: "default",
+  },
+});
+
+export default function Context({
+  context,
+  variant,
+  size,
+}: { context: Context } & VariantProps<typeof contextVariants>) {
   const [isEditing, setIsEditing] = useState<Boolean>(false);
 
   const architectureData = useNodeContext();
@@ -87,7 +116,7 @@ export default function Context({ context }: { context: Context }) {
   };
 
   return (
-    <div className="bg-gray-400 flex items-start gap-4 p-8">
+    <div className={cn(contextVariants({ variant, size }))}>
       <div className={`flex ${isEditing ? "items-start" : "items-center"}`}>
         {!isEditing ? (
           <h1>{context.label}</h1>
@@ -112,7 +141,7 @@ export default function Context({ context }: { context: Context }) {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Save</Button>
             </form>
           </Form>
         )}
@@ -173,7 +202,7 @@ export default function Context({ context }: { context: Context }) {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Save</Button>
             </form>
           </Form>
         </PopoverContent>

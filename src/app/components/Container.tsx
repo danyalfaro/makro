@@ -3,6 +3,7 @@
 import { useNodeContext } from "../components/NodeContext";
 import { v4 as uuidv4 } from "uuid";
 import { Container, NodeType } from "../types/context";
+import { cva, type VariantProps } from "class-variance-authority";
 import {
   Popover,
   PopoverContent,
@@ -36,6 +37,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 const createComponentFormSchema = z.object({
   label: z.string().min(2).max(50),
@@ -45,7 +47,36 @@ const editContainerFormSchema = z.object({
   label: z.string().min(2).max(50),
 });
 
-export default function Container({ container }: { container: Container }) {
+const contaierVariants = cva("disabled:opacity-50", {
+  variants: {
+    variant: {
+      minimalist:
+        "flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow border-dashed border-black border-2 rounded-xl",
+      neumorphism:
+        "flex flex-col gap-4 text-black-foreground shadow-[inset_-7px_-7px_12px_3px_rgba(255,255,255,0.7),inset_7px_7px_12px_3px_rgba(0,0,0,0.10)] rounded-3xl",
+      neubrutalism:
+        "flex flex-col gap-8 bg-[#CEEB3C] font-bold text-black-foreground shadow-[18px_18px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2",
+    },
+    size: {
+      default: "p-8",
+      sm: "h-8 rounded-md px-3 text-xs",
+      lg: "h-10 rounded-md px-8",
+      icon: "h-9 w-9",
+    },
+  },
+  defaultVariants: {
+    variant: "neubrutalism",
+    size: "default",
+  },
+});
+
+export default function Container({
+  container,
+  size,
+  variant,
+}: {
+  container: Container;
+} & VariantProps<typeof contaierVariants>) {
   const [isEditing, setIsEditing] = useState<Boolean>(false);
 
   const architectureData = useNodeContext();
@@ -89,7 +120,7 @@ export default function Container({ container }: { container: Container }) {
     setIsEditing(false);
   };
   return (
-    <div className="bg-green-500 flex flex-col gap-4 p-8">
+    <div className={cn(contaierVariants({ variant, size }))}>
       <div className="flex items-start justify-between">
         <div className={`flex ${isEditing ? "items-start" : "items-center"}`}>
           {!isEditing ? (
@@ -115,7 +146,7 @@ export default function Container({ container }: { container: Container }) {
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Save</Button>
               </form>
             </Form>
           )}
@@ -180,7 +211,7 @@ export default function Container({ container }: { container: Container }) {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Save</Button>
             </form>
           </Form>
         </PopoverContent>
