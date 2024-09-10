@@ -37,25 +37,26 @@ import Code from "./Code";
 import { useState } from "react";
 import { cva, VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import { STYLE } from '../types/styles'
 
 const createCodeFormSchema = z.object({
   label: z.string().min(2).max(50),
-});
+})
 
 const editComponentFormSchema = z.object({
   label: z.string().min(2).max(50),
-});
+})
 
 const componentVariants = cva('disabled:opacity-50', {
   variants: {
     variant: {
-      minimalism:
-        'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground bg-black bg-opacity-5 rounded-xl',
-      neumorphism:
+      [STYLE.MINIMALISM]:
+        'flex flex-col gap-4 text-black-foreground bg-black bg-opacity-5 rounded-xl',
+      [STYLE.NEUMORPHISM]:
         'flex flex-col gap-4 rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)]',
-      neubrutalism:
-        'flex flex-col gap-8 bg-[#CEEB3C] font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
-      glassmorphism:
+      [STYLE.NEUBRUTALISM]:
+        'flex flex-col gap-8 font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+      [STYLE.GLASSMORPHISM]:
         'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-white bg-opacity-5',
     },
     size: {
@@ -66,7 +67,7 @@ const componentVariants = cva('disabled:opacity-50', {
     },
   },
   defaultVariants: {
-    variant: 'minimalism',
+    variant: STYLE.MINIMALISM,
     size: 'default',
   },
 })

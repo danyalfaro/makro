@@ -38,25 +38,26 @@ import Container from "./Container";
 import { v4 as uuidv4 } from "uuid";
 import { cva, VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import { STYLE } from '../types/styles'
 
 const editContextFormSchema = z.object({
   label: z.string().min(2).max(50),
-});
+})
 const createContainerFormSchema = z.object({
   label: z.string().min(2).max(50),
-});
+})
 
 const contextVariants = cva('disabled:opacity-50', {
   variants: {
     variant: {
-      minimalism:
-        'flex items-start gap-4 bg-[#eeeeee] text-black-foreground rounded-xl',
-      neumorphism:
-        'flex items-start gap-4 bg-[#eeeeee] text-black-foreground shadow rounded-3xl',
-      neubrutalism:
-        'flex items-start gap-12 bg-[#CEEB3C] font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
-      glassmorphism:
-        'flex items-start gap-4 text-black-foreground bg-gradient-to-r from-[#63E8FF] to-[#5878F6] border-solid border-[#ffffff20] border-[1px] rounded-xl',
+      [STYLE.MINIMALISM]:
+        'flex items-start gap-4 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo text-black-foreground rounded-xl',
+      [STYLE.NEUMORPHISM]:
+        'flex items-start gap-4 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo text-black-foreground shadow rounded-3xl',
+      [STYLE.NEUBRUTALISM]:
+        'flex items-start gap-12 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+      [STYLE.GLASSMORPHISM]:
+        'flex items-start gap-4 text-black-foreground bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo border-solid border-[#ffffff20] border-[1px] rounded-xl',
     },
     size: {
       default: 'p-8',
@@ -66,7 +67,7 @@ const contextVariants = cva('disabled:opacity-50', {
     },
   },
   defaultVariants: {
-    variant: 'minimalism',
+    variant: STYLE.MINIMALISM,
     size: 'default',
   },
 })

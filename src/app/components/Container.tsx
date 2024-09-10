@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Component from "./Component";
-import { useEffect, useState } from "react";
+import { useState } from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,25 +38,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { STYLE } from '../types/styles'
 
 const createComponentFormSchema = z.object({
   label: z.string().min(2).max(50),
-});
+})
 
 const editContainerFormSchema = z.object({
   label: z.string().min(2).max(50),
-});
+})
 
 const contaierVariants = cva('disabled:opacity-50', {
   variants: {
     variant: {
-      minimalism:
-        'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground border-dashed border-black border-2 rounded-xl',
-      neumorphism:
+      [STYLE.MINIMALISM]:
+        'flex flex-col gap-4 bg-transparent text-black-foreground border-dashed border-black border-2 rounded-xl',
+      [STYLE.NEUMORPHISM]:
         'flex flex-col gap-4 text-black-foreground shadow-[inset_-7px_-7px_12px_3px_rgba(255,255,255,0.7),inset_7px_7px_12px_3px_rgba(0,0,0,0.10)] rounded-3xl',
-      neubrutalism:
-        'flex flex-col gap-8 bg-[#CEEB3C] font-bold text-black-foreground shadow-[18px_18px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
-      glassmorphism:
+      [STYLE.NEUBRUTALISM]:
+        'flex flex-col gap-8 font-bold text-black-foreground shadow-[18px_18px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+      [STYLE.GLASSMORPHISM]:
         'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-white bg-opacity-5',
     },
     size: {
@@ -67,7 +68,7 @@ const contaierVariants = cva('disabled:opacity-50', {
     },
   },
   defaultVariants: {
-    variant: 'minimalism',
+    variant: STYLE.MINIMALISM,
     size: 'default',
   },
 })
