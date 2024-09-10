@@ -51,13 +51,13 @@ const contextVariants = cva('disabled:opacity-50', {
   variants: {
     variant: {
       [STYLE.MINIMALISM]:
-        'flex items-start gap-4 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo text-black-foreground rounded-xl',
+        'flex flex-col items-start gap-4 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo text-black-foreground rounded-xl',
       [STYLE.NEUMORPHISM]:
-        'flex items-start gap-4 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo text-black-foreground shadow rounded-3xl',
+        'flex flex-col items-start gap-4 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo text-black-foreground shadow rounded-3xl',
       [STYLE.NEUBRUTALISM]:
-        'flex items-start gap-12 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+        'flex flex-col items-start gap-12 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
       [STYLE.GLASSMORPHISM]:
-        'flex items-start gap-4 text-black-foreground bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo border-solid border-[#ffffff20] border-[1px] rounded-xl',
+        'flex flex-col items-start gap-4 text-black-foreground bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo border-solid border-[#ffffff20] border-[1px] rounded-xl',
     },
     size: {
       default: 'p-8',
@@ -70,16 +70,16 @@ const contextVariants = cva('disabled:opacity-50', {
     variant: STYLE.MINIMALISM,
     size: 'default',
   },
-})
+});
 
 export default function Context({
   context,
   variant,
   size,
 }: { context: Context } & VariantProps<typeof contextVariants>) {
-  const [isEditing, setIsEditing] = useState<Boolean>(false)
+  const [isEditing, setIsEditing] = useState<Boolean>(false);
 
-  const architectureData = useNodeContext()
+  const architectureData = useNodeContext();
 
   const editContextForm = useForm<z.infer<typeof editContextFormSchema>>({
     resolver: zodResolver(editContextFormSchema),
@@ -87,7 +87,7 @@ export default function Context({
       label: context.label,
     },
     shouldUnregister: true,
-  })
+  });
 
   const form = useForm<z.infer<typeof createContainerFormSchema>>({
     resolver: zodResolver(createContainerFormSchema),
@@ -95,28 +95,28 @@ export default function Context({
       label: '',
     },
     shouldUnregister: true,
-  })
+  });
 
   const onSubmit = (values: z.infer<typeof createContainerFormSchema>) => {
-    const { label } = values
+    const { label } = values;
     const newContainer = {
       id: uuidv4(),
       label,
       type: NodeType.CONTAINER,
       children: [],
-    }
-    architectureData?.addNode(architectureData.data[0].id, newContainer)
-  }
+    };
+    architectureData?.addNode(architectureData.data[0].id, newContainer);
+  };
 
   const onEdit = (values: z.infer<typeof editContextFormSchema>) => {
-    const { label } = values
+    const { label } = values;
     const newContext = {
       ...context,
       label,
-    }
-    architectureData?.editNode(newContext)
-    setIsEditing(false)
-  }
+    };
+    architectureData?.editNode(newContext);
+    setIsEditing(false);
+  };
 
   return (
     <div className={cn(contextVariants({ variant, size }))}>
@@ -166,7 +166,7 @@ export default function Context({
             <DropdownMenuContent>
               <DropdownMenuItem
                 onClick={() => {
-                  architectureData?.removeNode(context)
+                  architectureData?.removeNode(context);
                 }}
               >
                 Remove
@@ -175,45 +175,50 @@ export default function Context({
           </DropdownMenu>
         )}
       </div>
-      {context.children.map((container, index) => (
-        <Container
-          container={container}
-          key={`container-${index}`}
-          variant={variant}
-        />
-      ))}
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button type="button">Add Container</Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <PopoverClose>
-                <Cross2Icon />
-              </PopoverClose>
+      <div className="flex gap-10">
+        {context.children.map((container, index) => (
+          <Container
+            container={container}
+            key={`container-${index}`}
+            variant={variant}
+          />
+        ))}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button type="button">Add Container</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
+                <PopoverClose>
+                  <Cross2Icon />
+                </PopoverClose>
 
-              <FormField
-                control={form.control}
-                name="label"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Label</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      The label used for the container.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Save</Button>
-            </form>
-          </Form>
-        </PopoverContent>
-      </Popover>
+                <FormField
+                  control={form.control}
+                  name="label"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Label</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        The label used for the container.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Save</Button>
+              </form>
+            </Form>
+          </PopoverContent>
+        </Popover>
+      </div>
     </div>
-  )
+  );
 }

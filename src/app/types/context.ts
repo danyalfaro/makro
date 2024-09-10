@@ -1,3 +1,5 @@
+import { STYLE } from './styles';
+
 export type Code = {
   type: NodeType.CODE;
   id: string;
@@ -26,14 +28,16 @@ export type Context = {
 };
 
 export enum NodeType {
-  CONTAINER = "CONTAINER",
-  COMPONENT = "COMPONENT",
-  CODE = "CODE",
-  CONTEXT = "CONTEXT",
+  CONTAINER = 'CONTAINER',
+  COMPONENT = 'COMPONENT',
+  CODE = 'CODE',
+  CONTEXT = 'CONTEXT',
 }
 
 export type ArchitectureData = {
   data: Context[];
+  style: STYLE;
+  setStyle: any;
   addNode: any;
   removeNode: any;
   editNode: any;

@@ -9,6 +9,7 @@ import {
 } from "react";
 import { ArchitectureData, Context, Node, NodeType } from "../types/context";
 import { v4 as uuidv4 } from "uuid";
+import { STYLE } from '../types/styles';
 
 export const NodeContext = createContext<ArchitectureData | null>(null);
 
@@ -18,54 +19,55 @@ export default function NodeContextProvider({
   children: ReactElement;
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [style, setStyle] = useState<STYLE>(STYLE.MINIMALISM);
   const [data, setData] = useState<Context[]>([
     {
       id: uuidv4(),
-      label: "Name of the Project",
+      label: 'Name of the Project',
       type: NodeType.CONTEXT,
       children: [
         {
           id: uuidv4(),
-          label: "Container 1",
+          label: 'Container 1',
           type: NodeType.CONTAINER,
           children: [
             {
               id: uuidv4(),
-              label: "Users",
+              label: 'Users',
               type: NodeType.COMPONENT,
               children: [
-                { label: "Desktop", id: uuidv4(), type: NodeType.CODE },
-                { label: "Tablet", id: uuidv4(), type: NodeType.CODE },
-                { label: "Mobile", id: uuidv4(), type: NodeType.CODE },
+                { label: 'Desktop', id: uuidv4(), type: NodeType.CODE },
+                { label: 'Tablet', id: uuidv4(), type: NodeType.CODE },
+                { label: 'Mobile', id: uuidv4(), type: NodeType.CODE },
               ],
             },
           ],
         },
         {
-          label: "Container 2",
+          label: 'Container 2',
           id: uuidv4(),
           type: NodeType.CONTAINER,
           children: [
             {
-              label: "Front End",
+              label: 'Front End',
               id: uuidv4(),
               type: NodeType.COMPONENT,
               children: [
-                { label: "React", id: "reactCode", type: NodeType.CODE },
+                { label: 'React', id: 'reactCode', type: NodeType.CODE },
               ],
             },
           ],
         },
         {
-          label: "Container 3",
+          label: 'Container 3',
           id: uuidv4(),
           type: NodeType.CONTAINER,
           children: [
             {
-              label: "Back End",
+              label: 'Back End',
               id: uuidv4(),
               type: NodeType.COMPONENT,
-              children: [{ label: "API", id: "apiCode", type: NodeType.CODE }],
+              children: [{ label: 'API', id: 'apiCode', type: NodeType.CODE }],
             },
           ],
         },
@@ -159,7 +161,15 @@ export default function NodeContextProvider({
 
   return (
     <NodeContext.Provider
-      value={{ data, isLoading, addNode, removeNode, editNode }}
+      value={{
+        data,
+        isLoading,
+        addNode,
+        removeNode,
+        editNode,
+        style,
+        setStyle,
+      }}
     >
       {children}
     </NodeContext.Provider>
