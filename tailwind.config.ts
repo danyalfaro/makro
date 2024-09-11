@@ -22,6 +22,9 @@ const config: Config = {
       colors: {
         contextBackgroundColorFrom: 'var(--contextBackgroundColorFrom)',
         contextBackgroundColorTo: 'var(--contextBackgroundColorTo)',
+        containerBackgroundColor: 'var(--containerBackgroundColor)',
+        componentBackgroundColor: 'var(--componentBackgroundColor)',
+        codeBackgroundColor: 'var(--codeBackgroundColor)',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -66,5 +69,5 @@ const config: Config = {
     },
   },
   plugins: [require('tailwindcss-animate')],
-}
+};
 export default config;

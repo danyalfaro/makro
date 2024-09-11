@@ -1,27 +1,27 @@
 "use client";
 
-import { DEFAULT_STYLE, useNodeContext } from '../components/NodeContext';
+import { useNodeContext } from '../components/NodeContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { PopoverClose } from "@radix-ui/react-popover";
+} from '@/components/ui/dropdown-menu';
+import { PopoverClose } from '@radix-ui/react-popover';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
 import {
   Cross2Icon,
   DotsVerticalIcon,
   Pencil1Icon,
-} from "@radix-ui/react-icons";
-import z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '@radix-ui/react-icons';
+import z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -30,15 +30,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Context, NodeType } from "../types/context";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Context, NodeType } from '../types/context';
 import { useRef, useState } from 'react';
 import Container from './Container';
 import { v4 as uuidv4 } from 'uuid';
 import { cva, VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import { STYLE } from '../types/styles';
+import { DEFAULT_STYLE } from '@/lib/constants';
 
 const editContextFormSchema = z.object({
   label: z.string().min(2).max(50),
@@ -144,9 +145,6 @@ export default function Context({
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
-                    <FormDescription>
-                      The label used for the container.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

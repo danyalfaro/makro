@@ -59,8 +59,8 @@ export default function Home() {
   };
 
   return (
-    <main className="w-5/6">
-      <div className="w-full overflow-auto p-4">
+    <main className="h-screen w-5/6">
+      <div className="h-screen w-full overflow-auto p-4">
         {architectureData &&
           !architectureData.isLoading &&
           architectureData.data && (

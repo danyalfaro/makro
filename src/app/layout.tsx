@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <NodeContextProvider>
         <body className={`${inter.className}`}>
-          <div className="flex w-screen">
+          <div className="flex h-screen w-screen">
             <Sidebar className="w-1/6" />
             {children}
           </div>

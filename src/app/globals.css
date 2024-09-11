@@ -8,9 +8,9 @@
   --background-end-rgb: 255, 255, 255;
   --contextBackgroundColorFrom: #eeeeee;
   --contextBackgroundColorTo: #eeeeee;
-  --containerBackgroundColor: #ffc600;
-  --componentBackgroundColor: #ffc600;
-  --codeBackgroundColor: #ffc600;
+  --containerBackgroundColor: #eeeeee;
+  --componentBackgroundColor: #eeeeee;
+  --codeBackgroundColor: #eeeeee;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -10,10 +10,10 @@ import {
 import { ArchitectureData, Context, Node, NodeType } from "../types/context";
 import { v4 as uuidv4 } from "uuid";
 import { STYLE } from '../types/styles';
+import { DEFAULT_STYLE } from '@/lib/constants';
 
 export const NodeContext = createContext<ArchitectureData | null>(null);
 
-export const DEFAULT_STYLE = STYLE.MINIMALISM;
 export default function NodeContextProvider({
   children,
 }: {

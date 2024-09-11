@@ -43,7 +43,7 @@ const codeVariants = cva('disabled:opacity-50', {
       [STYLE.NEUMORPHISM]:
         'flex flex-col gap-4 rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)]',
       [STYLE.NEUBRUTALISM]:
-        'flex flex-col gap-4 font-bold text-black-foreground shadow-[10px_10px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+        'flex flex-col gap-4 bg-codeBackgroundColor font-bold text-black-foreground shadow-[10px_10px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
       [STYLE.GLASSMORPHISM]:
         'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-white bg-opacity-5',
     },
@@ -58,7 +58,7 @@ const codeVariants = cva('disabled:opacity-50', {
     variant: STYLE.MINIMALISM,
     size: 'default',
   },
-})
+});
 
 export default function Code({
   code,
@@ -89,7 +89,7 @@ export default function Code({
   return (
     <div className={cn(codeVariants({ variant, size }))}>
       <div className="flex items-start justify-between">
-        <div className={`flex ${isEditing ? "items-start" : "items-center"}`}>
+        <div className={`flex ${isEditing ? 'items-start' : 'items-center'}`}>
           {!isEditing ? (
             <h1>{code.label}</h1>
           ) : (
@@ -106,9 +106,6 @@ export default function Code({
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
-                      <FormDescription>
-                        The label used for the code.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
