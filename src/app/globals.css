@@ -6,8 +6,8 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --contextBackgroundColorFrom: #41bcff;
-  --contextBackgroundColorTo: #4000e1;
+  --contextBackgroundColorFrom: #eeeeee;
+  --contextBackgroundColorTo: #eeeeee;
   --containerBackgroundColor: #ffc600;
   --componentBackgroundColor: #ffc600;
   --codeBackgroundColor: #ffc600;

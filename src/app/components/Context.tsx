@@ -1,6 +1,6 @@
 "use client";
 
-import { useNodeContext } from "../components/NodeContext";
+import { DEFAULT_STYLE, useNodeContext } from '../components/NodeContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -67,7 +67,7 @@ const contextVariants = cva('disabled:opacity-50', {
     },
   },
   defaultVariants: {
-    variant: STYLE.MINIMALISM,
+    variant: DEFAULT_STYLE,
     size: 'default',
   },
 });

@@ -4,25 +4,21 @@ import { isValidColor } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { STYLE } from '../types/styles';
 import { Input } from '@/components/ui/input';
-import { useNodeContext } from './NodeContext';
+import { DEFAULT_STYLE, useNodeContext } from './NodeContext';
 import { StyleSelector } from './StyleSelector';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+export const DEFAULT_FIRST_COLOR = '#EEEEEE';
+export const DEFAULT_SECOND_COLOR = '#EEEEEE';
 
 export default function Sidebar() {
   const architectureData = useNodeContext();
 
-  const [firstColor, setFirstColor] = useState<string>(
-    document.documentElement.style.getPropertyValue(
-      '--contextBackgroundColorFrom'
-    )
-  );
-  const [secondColor, setSecondColor] = useState<string>(
-    document.documentElement.style.getPropertyValue(
-      '--contextBackgroundColorTo'
-    )
-  );
+  const [firstColor, setFirstColor] = useState<string>(DEFAULT_FIRST_COLOR);
+  const [secondColor, setSecondColor] = useState<string>(DEFAULT_SECOND_COLOR);
 
   useEffect(() => {
+    console.log(firstColor, secondColor);
     if (!isValidColor(firstColor) || !isValidColor(secondColor)) return;
     document.documentElement.style.setProperty(
       '--contextBackgroundColorFrom',
@@ -40,7 +36,10 @@ export default function Sidebar() {
   };
   return (
     <div className="flex h-screen w-80 flex-col gap-4 bg-[#eeeeee] p-12 shadow">
-      <StyleSelector onChange={handleStyleChange} />
+      <StyleSelector
+        onChange={handleStyleChange}
+        defaultValue={architectureData?.style || DEFAULT_STYLE}
+      />
       <Tabs defaultValue="solid" className="w-full">
         <TabsList>
           <TabsTrigger value="solid" onClick={() => setSecondColor(firstColor)}>

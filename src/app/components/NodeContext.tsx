@@ -13,13 +13,14 @@ import { STYLE } from '../types/styles';
 
 export const NodeContext = createContext<ArchitectureData | null>(null);
 
+export const DEFAULT_STYLE = STYLE.MINIMALISM;
 export default function NodeContextProvider({
   children,
 }: {
   children: ReactElement;
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [style, setStyle] = useState<STYLE>(STYLE.MINIMALISM);
+  const [style, setStyle] = useState<STYLE>(DEFAULT_STYLE);
   const [data, setData] = useState<Context[]>([
     {
       id: uuidv4(),
