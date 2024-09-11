@@ -34,18 +34,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Code from "./Code";
-import { useState } from "react";
-import { cva, VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
-import { STYLE } from '../types/styles'
+import { useRef, useState } from 'react';
+import { cva, VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+import { STYLE } from '../types/styles';
 
 const createCodeFormSchema = z.object({
   label: z.string().min(2).max(50),
-})
+});
 
 const editComponentFormSchema = z.object({
   label: z.string().min(2).max(50),
-})
+});
 
 const componentVariants = cva('disabled:opacity-50', {
   variants: {
@@ -70,7 +70,7 @@ const componentVariants = cva('disabled:opacity-50', {
     variant: STYLE.MINIMALISM,
     size: 'default',
   },
-})
+});
 
 export default function Component({
   component,
@@ -83,7 +83,7 @@ export default function Component({
   const createCodeForm = useForm<z.infer<typeof createCodeFormSchema>>({
     resolver: zodResolver(createCodeFormSchema),
     defaultValues: {
-      label: "",
+      label: '',
     },
     shouldUnregister: true,
   });
@@ -91,10 +91,13 @@ export default function Component({
   const editComponentForm = useForm<z.infer<typeof createCodeFormSchema>>({
     resolver: zodResolver(createCodeFormSchema),
     defaultValues: {
-      label: component?.label || "",
+      label: component?.label || '',
     },
     shouldUnregister: true,
   });
+
+  const popoverCloseRef = useRef<HTMLButtonElement>(null);
+  const closePopover = () => popoverCloseRef.current?.click();
 
   const onSubmit = (values: z.infer<typeof createCodeFormSchema>) => {
     const { label } = values;
@@ -105,6 +108,7 @@ export default function Component({
       children: [],
     };
     architectureData?.addNode(component.id, newCode);
+    closePopover();
   };
   const onEdit = (values: z.infer<typeof editComponentFormSchema>) => {
     const { label } = values;
@@ -166,7 +170,7 @@ export default function Component({
             <DropdownMenuContent>
               <DropdownMenuItem
                 onClick={() => {
-                  architectureData?.removeNode(component)
+                  architectureData?.removeNode(component);
                 }}
               >
                 Remove
@@ -189,7 +193,7 @@ export default function Component({
               onSubmit={createCodeForm.handleSubmit(onSubmit)}
               className="space-y-8"
             >
-              <PopoverClose>
+              <PopoverClose ref={popoverCloseRef}>
                 <Cross2Icon />
               </PopoverClose>
 
@@ -215,5 +219,5 @@ export default function Component({
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }

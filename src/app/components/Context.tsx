@@ -33,19 +33,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Context, NodeType } from "../types/context";
-import { useState } from "react";
-import Container from "./Container";
-import { v4 as uuidv4 } from "uuid";
-import { cva, VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
-import { STYLE } from '../types/styles'
+import { useRef, useState } from 'react';
+import Container from './Container';
+import { v4 as uuidv4 } from 'uuid';
+import { cva, VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+import { STYLE } from '../types/styles';
 
 const editContextFormSchema = z.object({
   label: z.string().min(2).max(50),
-})
+});
 const createContainerFormSchema = z.object({
   label: z.string().min(2).max(50),
-})
+});
 
 const contextVariants = cva('disabled:opacity-50', {
   variants: {
@@ -76,7 +76,10 @@ export default function Context({
   context,
   variant,
   size,
-}: { context: Context } & VariantProps<typeof contextVariants>) {
+  className,
+}: { context: Context; className?: string } & VariantProps<
+  typeof contextVariants
+>) {
   const [isEditing, setIsEditing] = useState<Boolean>(false);
 
   const architectureData = useNodeContext();
@@ -97,6 +100,9 @@ export default function Context({
     shouldUnregister: true,
   });
 
+  const popoverCloseRef = useRef<HTMLButtonElement>(null);
+  const closePopover = () => popoverCloseRef.current?.click();
+
   const onSubmit = (values: z.infer<typeof createContainerFormSchema>) => {
     const { label } = values;
     const newContainer = {
@@ -106,6 +112,7 @@ export default function Context({
       children: [],
     };
     architectureData?.addNode(architectureData.data[0].id, newContainer);
+    closePopover();
   };
 
   const onEdit = (values: z.infer<typeof editContextFormSchema>) => {
@@ -119,7 +126,7 @@ export default function Context({
   };
 
   return (
-    <div className={cn(contextVariants({ variant, size }))}>
+    <div className={cn(contextVariants({ variant, size }), className)}>
       <div className={`flex ${isEditing ? 'items-start' : 'items-center'}`}>
         {!isEditing ? (
           <h1>{context.label}</h1>
@@ -138,7 +145,7 @@ export default function Context({
                       <Input {...field} />
                     </FormControl>
                     <FormDescription>
-                      The label used for the code.
+                      The label used for the container.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -193,7 +200,7 @@ export default function Context({
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8"
               >
-                <PopoverClose>
+                <PopoverClose ref={popoverCloseRef}>
                   <Cross2Icon />
                 </PopoverClose>
 

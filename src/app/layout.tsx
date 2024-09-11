@@ -19,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <NodeContextProvider>
-        <body className={`${inter.className} flex`}>
-          <Sidebar />
-          {children}
+        <body className={`${inter.className}`}>
+          <div className="flex w-screen">
+            <Sidebar className="w-1/6" />
+            {children}
+          </div>
         </body>
       </NodeContextProvider>
     </html>

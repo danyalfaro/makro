@@ -49,7 +49,6 @@ export function StyleSelector({
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<string>(defaultValue);
 
-  console.log(defaultValue);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>

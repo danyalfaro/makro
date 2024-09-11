@@ -82,6 +82,10 @@ export default function NodeContextProvider({
 
   const addNode = (parentId: string, node: Node) => {
     let newNodes = [...data];
+    if (parentId === 'root' && node.type === NodeType.CONTEXT) {
+      setData([node]);
+      return;
+    }
     newNodes.forEach((context) => {
       if (context.id === parentId && node.type === NodeType.CONTAINER) {
         context.children.push(node);

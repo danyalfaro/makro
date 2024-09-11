@@ -30,23 +30,23 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Component from "./Component";
-import { useState } from 'react'
+import { useRef, useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { STYLE } from '../types/styles'
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
+import { STYLE } from '../types/styles';
 
 const createComponentFormSchema = z.object({
   label: z.string().min(2).max(50),
-})
+});
 
 const editContainerFormSchema = z.object({
   label: z.string().min(2).max(50),
-})
+});
 
 const contaierVariants = cva('disabled:opacity-50', {
   variants: {
@@ -71,18 +71,18 @@ const contaierVariants = cva('disabled:opacity-50', {
     variant: STYLE.MINIMALISM,
     size: 'default',
   },
-})
+});
 
 export default function Container({
   container,
   size,
   variant,
 }: {
-  container: Container
+  container: Container;
 } & VariantProps<typeof contaierVariants>) {
-  const [isEditing, setIsEditing] = useState<Boolean>(false)
+  const [isEditing, setIsEditing] = useState<Boolean>(false);
 
-  const architectureData = useNodeContext()
+  const architectureData = useNodeContext();
 
   const createComponentForm = useForm<
     z.infer<typeof createComponentFormSchema>
@@ -92,7 +92,7 @@ export default function Container({
       label: '',
     },
     shouldUnregister: true,
-  })
+  });
 
   const editContainerForm = useForm<z.infer<typeof editContainerFormSchema>>({
     resolver: zodResolver(editContainerFormSchema),
@@ -100,28 +100,32 @@ export default function Container({
       label: container?.label || '',
     },
     shouldUnregister: true,
-  })
+  });
+
+  const popoverCloseRef = useRef<HTMLButtonElement>(null);
+  const closePopover = () => popoverCloseRef.current?.click();
 
   const onSubmit = (values: z.infer<typeof createComponentFormSchema>) => {
-    const { label } = values
+    const { label } = values;
     const newComponent = {
       id: uuidv4(),
       label,
       type: NodeType.COMPONENT,
       children: [],
-    }
-    architectureData?.addNode(container.id, newComponent)
-  }
+    };
+    architectureData?.addNode(container.id, newComponent);
+    closePopover();
+  };
 
   const onEdit = (values: z.infer<typeof editContainerFormSchema>) => {
-    const { label } = values
+    const { label } = values;
     const editedContainer = {
       ...container,
       label,
-    }
-    architectureData?.editNode(editedContainer)
-    setIsEditing(false)
-  }
+    };
+    architectureData?.editNode(editedContainer);
+    setIsEditing(false);
+  };
   return (
     <div className={cn(contaierVariants({ variant, size }))}>
       <div className="flex items-start justify-between">
@@ -172,7 +176,7 @@ export default function Container({
             <DropdownMenuContent>
               <DropdownMenuItem
                 onClick={() => {
-                  architectureData?.removeNode(container)
+                  architectureData?.removeNode(container);
                 }}
               >
                 Remove
@@ -198,7 +202,7 @@ export default function Container({
               onSubmit={createComponentForm.handleSubmit(onSubmit)}
               className="space-y-8"
             >
-              <PopoverClose>
+              <PopoverClose ref={popoverCloseRef}>
                 <Cross2Icon />
               </PopoverClose>
 
@@ -224,5 +228,5 @@ export default function Container({
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }

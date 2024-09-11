@@ -1,6 +1,6 @@
 'use client';
 
-import { isValidColor } from '@/lib/utils';
+import { cn, isValidColor } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { STYLE } from '../types/styles';
 import { Input } from '@/components/ui/input';
@@ -11,14 +11,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 export const DEFAULT_FIRST_COLOR = '#EEEEEE';
 export const DEFAULT_SECOND_COLOR = '#EEEEEE';
 
-export default function Sidebar() {
+export default function Sidebar({ className }: { className: string }) {
   const architectureData = useNodeContext();
 
   const [firstColor, setFirstColor] = useState<string>(DEFAULT_FIRST_COLOR);
   const [secondColor, setSecondColor] = useState<string>(DEFAULT_SECOND_COLOR);
 
   useEffect(() => {
-    console.log(firstColor, secondColor);
     if (!isValidColor(firstColor) || !isValidColor(secondColor)) return;
     document.documentElement.style.setProperty(
       '--contextBackgroundColorFrom',
@@ -35,11 +34,18 @@ export default function Sidebar() {
     architectureData?.setStyle(STYLE[style]);
   };
   return (
-    <div className="flex h-screen w-80 flex-col gap-4 bg-[#eeeeee] p-12 shadow">
+    <div
+      className={cn(
+        'flex h-screen w-1/6 flex-col gap-4 bg-[#eeeeee] p-12 shadow',
+        className
+      )}
+    >
+      <label>Style</label>
       <StyleSelector
         onChange={handleStyleChange}
         defaultValue={architectureData?.style || DEFAULT_STYLE}
       />
+      <label>Color</label>
       <Tabs defaultValue="solid" className="w-full">
         <TabsList>
           <TabsTrigger value="solid" onClick={() => setSecondColor(firstColor)}>
@@ -48,6 +54,7 @@ export default function Sidebar() {
           <TabsTrigger value="gradient">Gradient</TabsTrigger>
         </TabsList>
         <TabsContent value="solid">
+          <label>Background Color</label>
           <Input
             type="color"
             onChange={(e) => {
@@ -58,11 +65,15 @@ export default function Sidebar() {
           />
         </TabsContent>
         <TabsContent value="gradient">
+          <label>Initial Background Color</label>
+
           <Input
             type="color"
             onChange={(e) => setFirstColor(e.target.value)}
             value={firstColor}
           />
+          <label>Final Background Color</label>
+
           <Input
             type="color"
             onChange={(e) => setSecondColor(e.target.value)}
