@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Makro
 
-## Getting Started
+**Makro** Create visually stunning software architecture diagrams following the C4 model with ease.
 
-First, run the development server:
+## ✨ Features
+
+- 🎨 **Easy-to-use Interface**: Intuitive box system to create diagrams effortlessly.
+- 🎉 **Custom Styles**: Pre-defined styles to choose from, allowing diagrams to look polished with just a few clicks.
+- 🎨 **Advanced Customization**: Users can further customize their diagrams by selecting specific colors and styles.
+
+## 🛠️ Tech Stack
+
+- ⚛️ **Next.js**: For server-side rendering, performance optimizations, and seamless routing.
+- 🎨 **TailwindCSS**: For highly customizable and utility-first CSS styling.
+- 🧩 **Shadcn**: For an elegant and modular component system to enhance UI/UX.
+
+## 🚀 Installation
+
+To get started with Makro, clone the repository and install the dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/makro.git
+cd makro
+npm install
 ```
+Open [http://localhost:3000](http://localhost:3000)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features to Come
+Makro is continuously evolving looking forward to the first release:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 📱 Mobile-Friendly Design: Soon, Makro will be fully optimized for mobile, allowing users to create and edit diagrams on the go with ease.
+- 🌑 Enhanced Dark Mode: A switch for a more refined and visually pleasing dark mode that enhances the diagram’s styling while reducing eye strain.
+- ♿ Improved Accessibility: We are working on making Makro more accessible, ensuring that all users, including those with disabilities, can easily interact with the app.
+- 🔍 Improved Diagram Navigation: The ability to zoom in/out, and scroll through diagrams seamlessly for better navigation and viewing.
+- 🗺️ C4 Model Zooming: Zoom into different layers of your diagram to follow the C4 modeling technique, providing more details as you zoom into various components.
