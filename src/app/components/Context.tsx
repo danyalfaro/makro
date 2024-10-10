@@ -128,9 +128,11 @@ export default function Context({
 
   return (
     <div className={cn(contextVariants({ variant, size }), className)}>
-      <div className={`flex ${isEditing ? 'items-start' : 'items-center'}`}>
+      <div
+        className={`group flex ${isEditing ? 'items-start' : 'items-center'}`}
+      >
         {!isEditing ? (
-          <h1>{context.label}</h1>
+          <h1 onDoubleClick={() => setIsEditing(true)}>{context.label}</h1>
         ) : (
           <Form {...editContextForm}>
             <form
@@ -143,7 +145,7 @@ export default function Context({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} autoFocus />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -159,7 +161,11 @@ export default function Context({
           size="icon"
           onClick={() => setIsEditing((prev) => !prev)}
         >
-          {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
+          {!isEditing ? (
+            <Pencil1Icon className="invisible group-hover:visible" />
+          ) : (
+            <Cross2Icon />
+          )}
         </Button>
         {!isEditing && (
           <DropdownMenu>

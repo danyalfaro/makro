@@ -15,11 +15,15 @@ import {
   DEFAULT_CONTAINER_COLOR,
   DEFAULT_COMPONENT_COLOR,
 } from '@/lib/constants';
+import { Button } from '@/components/ui/button';
+import { PlusCircledIcon } from '@radix-ui/react-icons';
+import { MinusCircleIcon } from 'lucide-react';
 
 export default function Sidebar({ className }: { className: string }) {
   const architectureData = useNodeContext();
 
   const [style, setStyle] = useState<STYLE>(DEFAULT_STYLE);
+  const [isGradient, setIsGradient] = useState<boolean>(false);
   const [contextColorStart, setContextColorStart] = useState<string>(
     DEFAULT_CONTEXT_COLOR_START
   );
@@ -85,33 +89,10 @@ export default function Sidebar({ className }: { className: string }) {
         defaultValue={architectureData?.style || DEFAULT_STYLE}
       />
       <label className="font-bold">Color</label>
-      <Tabs defaultValue="solid" className="w-full">
-        <TabsList>
-          <TabsTrigger
-            value="solid"
-            onClick={() => setContextColorEnd(contextColorStart)}
-          >
-            Solid
-          </TabsTrigger>
-          <TabsTrigger value="gradient">Gradient</TabsTrigger>
-        </TabsList>
-        <TabsContent value="solid">
-          <div className="flex gap-2">
-            <label>Context</label>
-            <Input
-              className="h-6 w-6 cursor-pointer rounded-lg border-none p-0"
-              type="color"
-              onChange={(e) => {
-                setContextColorStart(e.target.value);
-                setContextColorEnd(e.target.value);
-              }}
-              value={contextColorStart}
-            />
-          </div>
-        </TabsContent>
-        <TabsContent value="gradient">
-          <div className="flex gap-2">
-            <label>Context</label>
+      <div className="flex items-center gap-2">
+        <label>Context</label>
+        {isGradient ? (
+          <div className="flex items-center">
             <Input
               className="h-6 w-6 cursor-pointer rounded-lg border-none p-0"
               type="color"
@@ -128,9 +109,40 @@ export default function Sidebar({ className }: { className: string }) {
               }}
               value={contextColorEnd}
             />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => {
+                setIsGradient(false);
+                setContextColorEnd(contextColorStart);
+              }}
+            >
+              <MinusCircleIcon height={24} width={24} />
+            </Button>
           </div>
-        </TabsContent>
-      </Tabs>
+        ) : (
+          <div className="flex items-center">
+            <Input
+              className="h-6 w-6 cursor-pointer rounded-lg border-none p-0"
+              type="color"
+              onChange={(e) => {
+                setContextColorStart(e.target.value);
+                setContextColorEnd(e.target.value);
+              }}
+              value={contextColorStart}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsGradient(true)}
+            >
+              <PlusCircledIcon height={24} width={24} />
+            </Button>
+          </div>
+        )}
+      </div>
       <div className="flex gap-2">
         <label>Container</label>
         <Input

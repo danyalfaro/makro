@@ -15,10 +15,11 @@ import {
   Cross2Icon,
   DotsVerticalIcon,
   Pencil1Icon,
-} from "@radix-ui/react-icons";
-import z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+  PlusCircledIcon,
+} from '@radix-ui/react-icons';
+import z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -27,9 +28,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import Component from "./Component";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import Component from './Component';
 import { useRef, useState } from 'react';
 import {
   DropdownMenu,
@@ -52,13 +53,13 @@ const contaierVariants = cva('disabled:opacity-50', {
   variants: {
     variant: {
       [STYLE.MINIMALISM]:
-        'flex flex-col gap-4 bg-transparent text-black-foreground border-dashed border-black border-2 rounded-xl',
+        'flex flex-col gap-4 bg-containerBackgroundColor text-black-foreground border-dashed border-black border-2 rounded-xl', //bg-transparent
       [STYLE.NEUMORPHISM]:
         'flex flex-col gap-4 bg-containerBackgroundColor text-black-foreground shadow-[inset_-7px_-7px_12px_3px_rgba(255,255,255,0.7),inset_7px_7px_12px_3px_rgba(0,0,0,0.10)] rounded-3xl',
       [STYLE.NEUBRUTALISM]:
         'flex flex-col gap-8 bg-containerBackgroundColor font-bold text-black-foreground shadow-[18px_18px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
       [STYLE.GLASSMORPHISM]:
-        'flex flex-col gap-4 text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-white bg-opacity-5',
+        'flex flex-col gap-4 text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-containerBackgroundColor bg-opacity-5', //bg-white
     },
     size: {
       default: 'p-8',
@@ -129,9 +130,11 @@ export default function Container({
   return (
     <div className={cn(contaierVariants({ variant, size }))}>
       <div className="flex items-start justify-between">
-        <div className={`flex ${isEditing ? 'items-start' : 'items-center'}`}>
+        <div
+          className={`group flex cursor-pointer ${isEditing ? 'items-start' : 'items-center'}`}
+        >
           {!isEditing ? (
-            <h1>{container.label}</h1>
+            <h1 onDoubleClick={() => setIsEditing(true)}>{container.label}</h1>
           ) : (
             <Form {...editContainerForm}>
               <form
@@ -144,7 +147,7 @@ export default function Container({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} autoFocus />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -160,7 +163,11 @@ export default function Container({
             size="icon"
             onClick={() => setIsEditing((prev) => !prev)}
           >
-            {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
+            {!isEditing ? (
+              <Pencil1Icon className="invisible group-hover:visible" />
+            ) : (
+              <Cross2Icon />
+            )}
           </Button>
         </div>
         {!isEditing && (
@@ -190,9 +197,13 @@ export default function Container({
         />
       ))}
       <Popover>
-        <PopoverTrigger asChild>
-          <Button type="button">Add Component</Button>
-        </PopoverTrigger>
+        <div className="flex items-center justify-center">
+          <PopoverTrigger asChild>
+            <Button type="button" variant="ghost" size="icon">
+              <PlusCircledIcon height={24} width={24} />
+            </Button>
+          </PopoverTrigger>
+        </div>
         <PopoverContent>
           <Form {...createComponentForm}>
             <form
@@ -208,7 +219,7 @@ export default function Container({
                 name="label"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Label</FormLabel>
+                    <FormLabel>Component Label</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>

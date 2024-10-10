@@ -51,13 +51,13 @@ const componentVariants = cva('disabled:opacity-50', {
   variants: {
     variant: {
       [STYLE.MINIMALISM]:
-        'flex flex-col gap-4 text-black-foreground bg-black bg-opacity-5 rounded-xl',
+        'flex flex-col gap-4 text-black-foreground bg-componentBackgroundColor bg-opacity-5 rounded-xl',
       [STYLE.NEUMORPHISM]:
-        'flex flex-col gap-4 rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)]',
+        'flex flex-col gap-4 bg-componentBackgroundColor rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)]',
       [STYLE.NEUBRUTALISM]:
         'flex flex-col gap-8 bg-componentBackgroundColor font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
       [STYLE.GLASSMORPHISM]:
-        'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-white bg-opacity-5',
+        'flex flex-col gap-4 bg-componentBackgroundColor text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-opacity-5',
     },
     size: {
       default: 'p-8',
@@ -123,9 +123,11 @@ export default function Component({
   return (
     <div className={cn(componentVariants({ variant, size }))}>
       <div className="flex items-start justify-between">
-        <div className={`flex ${isEditing ? 'items-start' : 'items-center'}`}>
+        <div
+          className={`group flex ${isEditing ? 'items-start' : 'items-center'}`}
+        >
           {!isEditing ? (
-            <h1>{component.label}</h1>
+            <h1 onDoubleClick={() => setIsEditing(true)}>{component.label}</h1>
           ) : (
             <Form {...editComponentForm}>
               <form
@@ -138,7 +140,7 @@ export default function Component({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} autoFocus />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -154,7 +156,11 @@ export default function Component({
             size="icon"
             onClick={() => setIsEditing((prev) => !prev)}
           >
-            {!isEditing ? <Pencil1Icon /> : <Cross2Icon />}
+            {!isEditing ? (
+              <Pencil1Icon className="invisible group-hover:visible" />
+            ) : (
+              <Cross2Icon />
+            )}
           </Button>
         </div>
         {!isEditing && (
