@@ -19,10 +19,11 @@ import {
   Cross2Icon,
   DotsVerticalIcon,
   Pencil1Icon,
-} from "@radix-ui/react-icons";
-import z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+  PlusCircledIcon,
+} from '@radix-ui/react-icons';
+import z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
   FormControl,
@@ -31,9 +32,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import Code from "./Code";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import Code from './Code';
 import { useRef, useState } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
@@ -53,9 +54,9 @@ const componentVariants = cva('disabled:opacity-50', {
       [STYLE.MINIMALISM]:
         'flex flex-col gap-4 text-black-foreground bg-componentBackgroundColor bg-opacity-5 rounded-xl',
       [STYLE.NEUMORPHISM]:
-        'flex flex-col gap-4 bg-componentBackgroundColor rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)]',
+        'flex flex-col gap-4 bg-componentBackgroundColor rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)] dark:shadow-[inset_-7px_-7px_12px_3px_rgba(0,0,0,0.7),inset_7px_7px_20px_3px_rgba(240,240,240,0.40)]',
       [STYLE.NEUBRUTALISM]:
-        'flex flex-col gap-8 bg-componentBackgroundColor font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+        'flex flex-col gap-8 bg-componentBackgroundColor font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-black dark:border-white dark:shadow-componentBackgroundColor dark:bg-black dark:text-white border-2',
       [STYLE.GLASSMORPHISM]:
         'flex flex-col gap-4 bg-componentBackgroundColor text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-opacity-5',
     },
@@ -187,9 +188,13 @@ export default function Component({
         <Code code={code} key={`code-${index}`} variant={variant} />
       ))}
       <Popover>
-        <PopoverTrigger asChild>
-          <Button type="button">Add Code</Button>
-        </PopoverTrigger>
+        <div className="flex items-center justify-center">
+          <PopoverTrigger asChild>
+            <Button type="button" variant="ghost" size="icon">
+              <PlusCircledIcon height={24} width={24} />
+            </Button>
+          </PopoverTrigger>
+        </div>
         <PopoverContent>
           <Form {...createCodeForm}>
             <form

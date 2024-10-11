@@ -19,21 +19,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Code } from "../types/context";
-import { useState } from "react";
-import { cva, VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
-import { STYLE } from '../types/styles'
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Code } from '../types/context';
+import { useState } from 'react';
+import { cva, VariantProps } from 'class-variance-authority';
+import { cn } from '@/lib/utils';
+import { STYLE } from '../types/styles';
 
 const editCodeFormSchema = z.object({
   label: z.string().min(2).max(50),
-})
+});
 
 const codeVariants = cva('disabled:opacity-50', {
   variants: {
@@ -41,9 +40,9 @@ const codeVariants = cva('disabled:opacity-50', {
       [STYLE.MINIMALISM]:
         'flex flex-col gap-4 text-black-foreground bg-codeBackgroundColor bg-opacity-5 rounded-xl', //bg-black
       [STYLE.NEUMORPHISM]:
-        'flex flex-col gap-4 bg-codeBackgroundColor rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)]',
+        'flex flex-col gap-4 bg-codeBackgroundColor rounded-xl text-black-foreground shadow-[-7px_-7px_12px_3px_rgba(255,255,255,0.7),7px_7px_12px_3px_rgba(0,0,0,0.10)] dark:shadow-[inset_-7px_-7px_12px_3px_rgba(0,0,0,0.7),inset_7px_7px_20px_3px_rgba(240,240,240,0.40)]',
       [STYLE.NEUBRUTALISM]:
-        'flex flex-col gap-4 bg-codeBackgroundColor font-bold text-black-foreground shadow-[10px_10px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+        'flex flex-col gap-4 bg-codeBackgroundColor font-bold text-black-foreground shadow-[10px_10px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-black dark:border-white dark:shadow-codeBackgroundColor dark:bg-black dark:text-white border-2',
       [STYLE.GLASSMORPHISM]:
         'flex flex-col gap-4 bg-[#eeeeee] text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-codeBackgroundColor bg-opacity-5', //bg-white
     },

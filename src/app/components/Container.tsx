@@ -55,9 +55,9 @@ const contaierVariants = cva('disabled:opacity-50', {
       [STYLE.MINIMALISM]:
         'flex flex-col gap-4 bg-containerBackgroundColor text-black-foreground border-dashed border-black border-2 rounded-xl', //bg-transparent
       [STYLE.NEUMORPHISM]:
-        'flex flex-col gap-4 bg-containerBackgroundColor text-black-foreground shadow-[inset_-7px_-7px_12px_3px_rgba(255,255,255,0.7),inset_7px_7px_12px_3px_rgba(0,0,0,0.10)] rounded-3xl',
+        'flex flex-col gap-4 bg-containerBackgroundColor text-black-foreground shadow-[inset_-7px_-7px_12px_3px_rgba(255,255,255,0.7),inset_7px_7px_12px_3px_rgba(0,0,0,0.10)] dark:shadow-[-7px_-7px_12px_3px_rgba(0,0,0,0.7),7px_7px_20px_3px_rgba(240,240,240,0.40)] rounded-3xl',
       [STYLE.NEUBRUTALISM]:
-        'flex flex-col gap-8 bg-containerBackgroundColor font-bold text-black-foreground shadow-[18px_18px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+        'flex flex-col gap-8 bg-containerBackgroundColor font-bold text-black-foreground shadow-[18px_18px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black dark:border-white dark:shadow-containerBackgroundColor dark:bg-black dark:text-white border-2',
       [STYLE.GLASSMORPHISM]:
         'flex flex-col gap-4 text-black-foreground shadow-[0px_10px_20px_0px_rgba(0,0,0,0.12)] border-solid border-[#ffffff20] border-[1px] backdrop-blur rounded-xl bg-containerBackgroundColor bg-opacity-5', //bg-white
     },

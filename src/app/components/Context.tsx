@@ -18,6 +18,7 @@ import {
   Cross2Icon,
   DotsVerticalIcon,
   Pencil1Icon,
+  PlusCircledIcon,
 } from '@radix-ui/react-icons';
 import z from 'zod';
 import { useForm } from 'react-hook-form';
@@ -56,7 +57,7 @@ const contextVariants = cva('disabled:opacity-50', {
       [STYLE.NEUMORPHISM]:
         'flex flex-col items-start gap-4 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo text-black-foreground shadow rounded-3xl',
       [STYLE.NEUBRUTALISM]:
-        'flex flex-col items-start gap-12 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-2',
+        'flex flex-col items-start gap-12 bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo dark:from-black dark:to-black font-bold text-black-foreground shadow-[14px_14px_0px_0px_rgba(0,0,0,0.9)] border-solid border-black border-black dark:border-white dark:shadow-contextBackgroundColorFrom dark:text-white border-2',
       [STYLE.GLASSMORPHISM]:
         'flex flex-col items-start gap-4 text-black-foreground bg-gradient-to-r from-contextBackgroundColorFrom to-contextBackgroundColorTo border-solid border-[#ffffff20] border-[1px] rounded-xl',
     },
@@ -195,9 +196,13 @@ export default function Context({
           />
         ))}
         <Popover>
-          <PopoverTrigger asChild>
-            <Button type="button">Add Container</Button>
-          </PopoverTrigger>
+          <div className="flex items-center justify-center">
+            <PopoverTrigger asChild>
+              <Button type="button" variant="ghost" size="icon">
+                <PlusCircledIcon height={24} width={24} />
+              </Button>
+            </PopoverTrigger>
+          </div>
           <PopoverContent>
             <Form {...form}>
               <form

@@ -6,7 +6,6 @@ import { STYLE } from '../types/styles';
 import { Input } from '@/components/ui/input';
 import { useNodeContext } from './NodeContext';
 import { StyleSelector } from './StyleSelector';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   DEFAULT_CONTEXT_COLOR_START,
   DEFAULT_CONTEXT_COLOR_END,
@@ -18,6 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { PlusCircledIcon } from '@radix-ui/react-icons';
 import { MinusCircleIcon } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 
 export default function Sidebar({ className }: { className: string }) {
   const architectureData = useNodeContext();
@@ -79,7 +79,7 @@ export default function Sidebar({ className }: { className: string }) {
   return (
     <div
       className={cn(
-        'flex h-screen w-1/6 flex-col gap-4 bg-[#eeeeee] p-12 shadow',
+        'flex h-screen w-1/6 flex-col gap-4 bg-[#eeeeee] p-12 shadow dark:bg-black dark:text-white',
         className
       )}
     >
@@ -176,6 +176,7 @@ export default function Sidebar({ className }: { className: string }) {
           value={codeColor}
         />
       </div>
+      <ThemeToggle />
     </div>
   );
 }
