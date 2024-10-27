@@ -1,20 +1,21 @@
-"use client";
+'use client';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useNodeContext } from "../components/NodeContext";
-import { v4 as uuidv4 } from "uuid";
-import { Component, NodeType } from "../types/context";
+} from '@/components/ui/dropdown-menu';
+import { useNodeContext } from '../components/NodeContext';
+import { v4 as uuidv4 } from 'uuid';
+import type { Component } from '../types/context';
+import { NodeType } from '../types/context';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { PopoverClose } from "@radix-ui/react-popover";
+} from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { PopoverClose } from '@radix-ui/react-popover';
 import {
   Cross2Icon,
   DotsVerticalIcon,

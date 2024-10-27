@@ -33,7 +33,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Context, NodeType } from '../types/context';
+import { NodeType } from '../types/context';
+import type { Context } from '../types/context';
 import { useRef, useState } from 'react';
 import Container from './Container';
 import { v4 as uuidv4 } from 'uuid';

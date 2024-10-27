@@ -2,7 +2,8 @@
 
 import { useNodeContext } from "../components/NodeContext";
 import { v4 as uuidv4 } from "uuid";
-import { Container, NodeType } from "../types/context";
+import { NodeType } from "../types/context";
+import type { Container } from "../types/context";
 import { cva, type VariantProps } from "class-variance-authority";
 import {
   Popover,
